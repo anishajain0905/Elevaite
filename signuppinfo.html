@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ElevAIte Sign Up</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Poppins', Georgia, serif;
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to right, #080053, #42abe3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      max-width: 450px;
+      width: 90vw;
+      padding: 2rem 2.5rem;
+      box-sizing: border-box;
+      text-align: center;
+    }
+    .logo {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+    .logo-text {
+      font-family: 'Bitcount Grid Double', Georgia, serif;
+      color: #2575fc;
+      line-height: 1.5;
+    }
+    .logo img {
+      height: 2.5rem;
+      width: auto;
+    }
+    h2 {
+      color: #2575fc;
+      margin-bottom: 1.5rem;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      margin-bottom: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-sizing: border-box;
+      transition: border-color 0.3s ease;
+    }
+    input.error-input, select.error-input {
+      border-color: #d93025;
+      background: #fef0ef;
+    }
+    .error {
+      color: #d93025;
+      font-size: 0.85rem;
+      margin: 0 0 12px 0;
+      display: none;
+      text-align: left;
+      user-select: none;
+    }
+    button {
+      background-color: #2575fc;
+      color: white;
+      padding: 0.9rem 2rem;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-top: 1rem;
+      width: 100%;
+      transition: background 0.3s ease;
+    }
+    button:hover:not(:disabled) {
+      background-color: #1a4fdc;
+    }
+    button:disabled {
+      background-color: #90b9ff;
+      cursor: default;
+    }
+    .btn-group {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 1.2rem;
+    }
+    .btn-group button {
+      width: 48%;
+      padding: 0.8rem 0;
+    }
+    .btn-option {
+      padding: 10px 18px;
+      margin: 8px 10px 20px 0;
+      border-radius: 8px;
+      border: 1px solid royalblue;
+      background: #f0f8ff; /* Light blue background for visibility */
+      color: royalblue;     /* Blue text for visibility */
+      cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+    .btn-option.selected {
+      background: royalblue;
+      color: white;
+    }
+    .checkbox {
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      justify-content: center;
+      gap: 8px;
+    }
+    .progress {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 30px;
+      user-select: none;
+    }
+    .circle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #ccc;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .circle.active {
+      background: royalblue;
+    }
+    /* Link styling */
+    a {
+      color: #2575fc;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    /* Payment dropdown */
+    #paymentOptions select {
+      width: 100%;
+      padding: 10px;
+      font-size: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-label="ElevAIte Sign Up Form">
+    <div class="logo" aria-label="ElevAIte logo">
+      <span class="logo-text">ELEVAITE</span>
+      <img src="logo.png" alt="Elevaite Logo" />
+    </div>
+
+    <div class="progress" aria-label="Signup progress">
+      <div class="circle active" id="step1" aria-current="step">1</div>
+      <div class="circle" id="step2">2</div>
+      <div class="circle" id="step3">3</div>
+      <div class="circle" id="step4">4</div>
+      <div class="circle" id="step5">5</div>
+    </div>
+
+    <!-- Step 1: Basic info -->
+    <form id="signupForm" novalidate>
+      <div class="section active" id="page1" aria-live="polite">
+        <h2>Let's get you ElevAIted! 🚀</h2>
+        <label for="fullname">Full Name *</label>
+        <input type="text" id="fullname" name="fullname" autocomplete="name" required aria-describedby="errorFullname" />
+        <div class="error" id="errorFullname">⚠️ Please enter your full name.</div>
+
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" autocomplete="email" required aria-describedby="errorEmail" />
+        <div class="error" id="errorEmail">⚠️ Please enter a valid email address.</div>
+
+        <label for="password">Password *</label>
+        <input type="password" id="password" name="password" required aria-describedby="errorPassword" />
+        <div class="error" id="errorPassword">⚠️ Please enter a password.</div>
+
+        <label for="confirmPassword">Confirm Password *</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required aria-describedby="errorConfirmPassword" />
+        <div class="error" id="errorConfirmPassword">⚠️ Passwords do not match.</div>
+
+        <div class="btn-group">
+          <div></div>
+          <button type="button" id="nextBtn1" onclick="nextPage()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 2: Course and School -->
+      <div class="section" id="page2" aria-live="polite" hidden>
+        <h2>Tell us more about you</h2>
+
+        <label for="course">Which course are you doing? *</label>
+        <select id="course" name="course" required aria-describedby="errorCourse" onchange="toggleSubjects()">
+          <option value="">-- Select --</option>
+          <option value="IB">IB</option>
+          <option value="A Levels">A Levels</option>
+        </select>
+        <div class="error" id="errorCourse">⚠️ Please select a course.</div>
+
+        <label for="school">What school do you go to? *</label>
+        <input type="text" id="school" name="school" placeholder="e.g. UWC Thailand" required aria-describedby="errorSchool" />
+        <div class="error" id="errorSchool">⚠️ Please enter your school name.</div>
+
+        <div class="btn-group">
+          <button type="button" onclick="prevPage()">Back</button>
+          <button type="button" id="nextBtn2" onclick="nextPage()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Subjects -->
+      <div class="section" id="page3" aria-live="polite" hidden>
+        <h2>Choose Your Subjects *</h2>
+
+        <!-- IB Subjects -->
+        <div id="ibSubjects" style="display:none;">
+          <label for="ib1">Group 1 *</label>
+          <select id="ib1" name="ib1" aria-describedby="errorIb1" required>
+            <option value="">-- Select --</option>
+            <option>English A: Lang & Lit</option>
+            <option>English A: Literature</option>
+            <option>Literature and Performance</option>
+            <option>Language A: Self-taught</option>
+          </select>
+          <div class="error" id="errorIb1">⚠️ Please select a Group 1 subject.</div>
+
+          <label for="ib2">Group 2 *</label>
+          <select id="ib2" name="ib2" aria-describedby="errorIb2" required>
+            <option value="">-- Select --</option>
+            <option>French B</option>
+            <option>Spanish B</option>
+            <option>Mandarin B</option>
+            <option>Ab Initio (French, Spanish, German)</option>
+          </select>
+          <div class="error" id="errorIb2">⚠️ Please select a Group 2 subject.</div>
+
+          <label for="ib3">Group 3 *</label>
+          <select id="ib3" name="ib3" aria-describedby="errorIb3" required>
+            <option value="">-- Select --</option>
+            <option>Economics</option>
+            <option>Business</option>
+            <option>Psychology</option>
+            <option>History</option>
+          </select>
+          <div class="error" id="errorIb3">⚠️ Please select a Group 3 subject.</div>
+
+          <label for="ib4">Group 4 *</label>
+          <select id="ib4" name="ib4" aria-describedby="errorIb4" required>
+            <option value="">-- Select --</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Computer Science</option>
+          </select>
+          <div class="error" id="errorIb4">⚠️ Please select a Group 4 subject.</div>
+
+          <label for="ib5">Group 5 *</label>
+          <select id="ib5" name="ib5" aria-describedby="errorIb5" required>
+            <option value="">-- Select --</option>
+            <option>Math AA HL</option>
+            <option>Math AA SL</option>
+            <option>Math AI HL</option>
+            <option>Math AI SL</option>
+          </select>
+          <div class="error" id="errorIb5">⚠️ Please select a Group 5 subject.</div>
+
+          <label for="ib6">Group 6 (optional)</label>
+          <select id="ib6" name="ib6">
+            <option value="">-- Select --</option>
+            <option>Visual Arts</option>
+            <option>Music</option>
+            <option>Film</option>
+            <option>None (Take extra from Group 3/4)</option>
+          </select>
+        </div>
+
+        <!-- A Levels Subjects -->
+        <div id="alevelSubjects" style="display:none;">
+          <label for="a1">Subject 1 *</label>
+          <select id="a1" name="a1" aria-describedby="errorA1" required>
+            <option value="">-- Select --</option>
+            <option>Math</option>
+            <option>Further Math</option>
+            <option>Economics</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Business</option>
+            <option>Geography</option>
+            <option>Psychology</option>
+            <option>Sociology</option>
+            <option>Politics</option>
+            <option>Computer Science</option>
+            <option>English Literature</option>
+            <option>English Language</option>
+            <option>Art & Design</option>
+            <option>History</option>
+          </select>
+          <div class="error" id="errorA1">⚠️ Please select Subject 1.</div>
+
+          <label for="a2">Subject 2 *</label>
+          <select id="a2" name="a2" aria-describedby="errorA2" required>
+            <option value="">-- Select --</option>
+            <option>Math</option>
+            <option>Further Math</option>
+            <option>Economics</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Business</option>
+            <option>Geography</option>
+            <option>Psychology</option>
+            <option>Sociology</option>
+            <option>Politics</option>
+            <option>Computer Science</option>
+            <option>English Literature</option>
+            <option>English Language</option>
+            <option>Art & Design</option>
+            <option>History</option>
+          </select>
+          <div class="error" id="errorA2">⚠️ Please select Subject 2.</div>
+
+          <label for="a3">Subject 3 *</label>
+          <select id="a3" name="a3" aria-describedby="errorA3" required>
+            <option value="">-- Select --</option>
+            <option>Math</option>
+            <option>Further Math</option>
+            <option>Economics</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Business</option>
+            <option>Geography</option>
+            <option>Psychology</option>
+            <option>Sociology</option>
+            <option>Politics</option>
+            <option>Computer Science</option>
+            <option>English Literature</option>
+            <option>English Language</option>
+            <option>Art & Design</option>
+            <option>History</option>
+          </select>
+          <div class="error" id="errorA3">⚠️ Please select Subject 3.</div>
+
+          <label for="a4">Optional Subject 4</label>
+          <select id="a4" name="a4">
+            <option value="">-- Select --</option>
+            <option>Math</option>
+            <option>Further Math</option>
+            <option>Economics</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Business</option>
+            <option>Geography</option>
+            <option>Psychology</option>
+            <option>Sociology</option>
+            <option>Politics</option>
+            <option>Computer Science</option>
+            <option>English Literature</option>
+            <option>English Language</option>
+            <option>Art & Design</option>
+            <option>History</option>
+          </select>
+
+          <label for="a5">Optional Subject 5</label>
+          <select id="a5" name="a5">
+            <option value="">-- Select --</option>
+            <option>Math</option>
+            <option>Further Math</option>
+            <option>Economics</option>
+            <option>Biology</option>
+            <option>Chemistry</option>
+            <option>Physics</option>
+            <option>Business</option>
+            <option>Geography</option>
+            <option>Psychology</option>
+            <option>Sociology</option>
+            <option>Politics</option>
+            <option>Computer Science</option>
+            <option>English Literature</option>
+            <option>English Language</option>
+            <option>Art & Design</option>
+            <option>History</option>
+          </select>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" onclick="prevPage()">Back</button>
+          <button type="button" id="nextBtn3" onclick="nextPage()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 4: Plan -->
+      <div class="section" id="page4" aria-live="polite" hidden>
+        <h2>Choose a Plan *</h2>
+
+        <button type="button" class="btn-option" onclick="selectPlan(event, 'free')" aria-pressed="false" id="planFree">Free</button>
+        <button type="button" class="btn-option" onclick="selectPlan(event, 'subscription')" aria-pressed="false" id="planSub">Subscription</button>
+        <div class="error" id="errorPlan" style="margin-top: 5px;">⚠️ Please select a plan.</div>
+
+        <div id="paymentOptions" style="display:none; margin-top: 15px;">
+          <label for="paymentSelect">Select payment:</label>
+          <select id="paymentSelect" name="paymentSelect">
+            <option value="">-- Choose --</option>
+            <option value="monthly">Monthly - 399THB</option>
+            <option value="yearly">Yearly - 4499THB</option>
+          </select>
+          <div class="error" id="errorPayment" style="display:none; color:#d93025; margin-top:4px;">
+            ⚠️ Please select a payment option. 
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button type="button" onclick="prevPage()">Back</button>
+          <button type="button" id="nextBtn4" onclick="nextPage()">Next</button>
+        </div>
+      </div>
+
+      <!-- Step 5: Terms -->
+      <div class="section" id="page5" aria-live="polite" hidden>
+        <h2>Terms & Conditions</h2>
+        <p>By continuing, you accept our <a href="#" target="_blank" rel="noopener noreferrer">Terms, Conditions and Privacy Policy</a>.</p>
+        <div class="checkbox" style="display: flex; align-items: center; gap: 10px;">
+          <input type="checkbox" id="acceptTerms" name="acceptTerms" aria-describedby="errorTerms" />
+          <label for="acceptTerms" style="margin: 0;">I agree *</label>
+        </div>
+        <div class="error" id="errorTerms" style="display:none; color:#d93025; margin-top:4px;">
+            ⚠️ You must agree before continuing.
+        </div>
+
+        <button type="submit" id="enterBtn" disabled>Sign Up</button>
+        <div class="btn-group" style="margin-top: 10px;">
+          <button type="button" onclick="prevPage()">Back</button>
+        </div>
+      </div>
+    </form>
+    <div id="successMessage" style="display: none; margin-top: 20px; text-align: center;">
+        <p style="font-size: 1.2rem; color: #2e7d32; font-weight: 600;"> ✅ Your account has been created! You may now 
+            <a href="slogin.html" style="color: #2e7d32; text-decoration: underline;">log in</a> 🎉
+        </p>
+    </div>
+
+
+    <p style="margin-top: 1rem; font-size: 0.9rem;">
+      Already have an account? <a href="slogin.html">Log in</a>
+    </p>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    let selectedPlan = '';
+
+    function showPage(step) {
+      for(let i=1; i<=5; i++) {
+        const page = document.getElementById('page' + i);
+        const stepCircle = document.getElementById('step' + i);
+        if(i === step) {
+          page.hidden = false;
+          page.classList.add('active');
+          stepCircle.classList.add('active');
+        } else {
+          page.hidden = true;
+          page.classList.remove('active');
+          stepCircle.classList.remove('active');
+        }
+      }
+    }
+
+    function showError(id, show) {
+      const el = document.getElementById(id);
+      if(el) el.style.display = show ? 'block' : 'none';
+      const inputId = id.replace('error', '');
+      const input = document.getElementById(inputId.charAt(0).toLowerCase() + inputId.slice(1));
+      if(input) {
+        if(show) input.classList.add('error-input');
+        else input.classList.remove('error-input');
+      }
+    }
+
+    function validateEmail(email) {
+      // Simple email regex
+      const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return re.test(email);
+    }
+
+    function validateStep1() {
+      let valid = true;
+
+      const fullname = document.getElementById('fullname').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (!fullname) {
+        showError('errorFullname', true);
+        valid = false;
+      } else {
+        showError('errorFullname', false);
+      }
+
+      if (!email || !validateEmail(email)) {
+        showError('errorEmail', true);
+        valid = false;
+      } else {
+        showError('errorEmail', false);
+      }
+
+      if (!password) {
+        showError('errorPassword', true);
+        valid = false;
+      } else {
+        showError('errorPassword', false);
+      }
+
+      if (password !== confirmPassword || !confirmPassword) {
+        showError('errorConfirmPassword', true);
+        valid = false;
+      } else {
+        showError('errorConfirmPassword', false);
+      }
+
+      return valid;
+    }
+
+    function validateStep2() {
+      let valid = true;
+      const course = document.getElementById('course').value;
+      const school = document.getElementById('school').value.trim();
+
+      if (!course) {
+        showError('errorCourse', true);
+        valid = false;
+      } else {
+        showError('errorCourse', false);
+      }
+
+      if (!school) {
+        showError('errorSchool', true);
+        valid = false;
+      } else {
+        showError('errorSchool', false);
+      }
+
+      return valid;
+    }
+
+    function validateStep3() {
+      let valid = true;
+      const course = document.getElementById('course').value;
+
+      if (course === 'IB') {
+        for (let i = 1; i <= 5; i++) {
+          const subj = document.getElementById('ib' + i).value;
+          if (!subj) {
+            showError('errorIb' + i, true);
+            valid = false;
+          } else {
+            showError('errorIb' + i, false);
+          }
+        }
+      } else if (course === 'A Levels') {
+        for (let i = 1; i <= 3; i++) {
+          const subj = document.getElementById('a' + i).value;
+          if (!subj) {
+            showError('errorA' + i, true);
+            valid = false;
+          } else {
+            showError('errorA' + i, false);
+          }
+        }
+      } else {
+        // Should not happen, but just in case
+        valid = false;
+      }
+      return valid;
+    }
+
+    function validateStep4() {
+        let valid = true;
+        if (!selectedPlan) {
+            document.getElementById('errorPlan').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('errorPlan').style.display = 'none';
+            if (selectedPlan === 'subscription') {
+                const paymentSelect = document.querySelector('#paymentOptions select');
+                if (!paymentSelect.value) {
+                    document.getElementById('errorPayment').style.display = 'block';
+                    paymentSelect.classList.add('error-input');
+                    valid = false;
+                } else {
+                    document.getElementById('errorPayment').style.display = 'none';
+                    paymentSelect.classList.remove('error-input');
+                }
+            } else {
+                document.getElementById('errorPayment').style.display = 'none';
+            }
+        }
+        return valid;
+    }
+
+
+
+    function validateStep5() {
+      const accepted = document.getElementById('acceptTerms').checked;
+      if (!accepted) {
+        document.getElementById('errorTerms').style.display = 'block';
+        return false;
+      }
+      document.getElementById('errorTerms').style.display = 'none';
+      return true;
+    }
+
+    function nextPage() {
+      if (currentStep === 1 && !validateStep1()) return;
+      if (currentStep === 2 && !validateStep2()) return;
+      if (currentStep === 3 && !validateStep3()) return;
+      if (currentStep === 4 && !validateStep4()) return;
+
+      if (currentStep < 5) {
+        currentStep++;
+        showPage(currentStep);
+      }
+    }
+
+    function prevPage() {
+      if (currentStep > 1) {
+        currentStep--;
+        showPage(currentStep);
+      }
+    }
+
+    function toggleSubjects() {
+      const course = document.getElementById('course').value;
+      document.getElementById('ibSubjects').style.display = course === 'IB' ? 'block' : 'none';
+      document.getElementById('alevelSubjects').style.display = course === 'A Levels' ? 'block' : 'none';
+    }
+
+    function selectPlan(event, plan) {
+      selectedPlan = plan;
+      document.querySelectorAll('.btn-option').forEach(btn => {
+        btn.classList.remove('selected');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      event.target.classList.add('selected');
+      event.target.setAttribute('aria-pressed', 'true');
+      const paymentOptions = document.getElementById('paymentOptions');
+      paymentOptions.style.display = plan === 'subscription' ? 'block' : 'none';
+      document.getElementById('errorPlan').style.display = 'none';
+    }
+    document.getElementById('acceptTerms').addEventListener('change', function () {
+        const enterBtn = document.getElementById('enterBtn');
+        enterBtn.disabled = !this.checked;
+        
+        if (this.checked) {
+            document.getElementById('errorTerms').style.display = 'none';
+        }
+    });
+
+
+    // Enable submit button only if terms accepted
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (!validateStep5()) return;
+        
+        // Hide the form
+        document.getElementById('signupForm').style.display = 'none';
+        // Show the success message
+        document.getElementById('successMessage').style.display = 'block';
+        // 🎉 Trigger confetti
+        confetti({
+            particleCount: 150,
+            spread: 70,
+            origin: { y: 0.6 }
+        });
+    });
+
+
+    // On submit, validate last step again and simulate form submission
+    document.getElementById('signupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      if(!validateStep5()) return;
+      // You can add actual submission logic here (AJAX or regular form submit)
+      // Reset form or redirect if needed
+      // window.location.href = 'dashboard.html';
+    });
+
+    showPage(currentStep);
+  </script>
+</body>
+</html>
