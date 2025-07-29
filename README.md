@@ -6,3 +6,7 @@ Different dashboard for students and teachers, students one has a more fun and e
 The business model includes either individual plan with two payment options monthly and yearly or a school plan where the school can buy webapp plan and give it to the students and teachers.
 This has the code for the UI/UX of Elevaite.
 The code uses Gpt 4.0 API model for AI assistant and personal planner, which has not been added due to risk of it being misused
+Group Project – IBM High School Internship (GitHub managed individually)
+Developed a web app aimed at making high school learning engaging and interactive. Although a group project, I was primarily responsible for managing the GitHub repository, the entire front-end development, UI/UX and implementing the final application files. 
+Documented the workflow and final build in detail.
+Tech used: HTML, CSS, JavaScript , GPT 4.0 API model[not included here]
