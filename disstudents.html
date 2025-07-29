@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevaite - Students</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background-color: #1565c0;
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      position: relative;
+      transition: width 0.3s ease;
+      overflow: hidden;
+    }
+
+    .sidebar.expanded {
+      width: 200px;
+      align-items: flex-start;
+      padding-left: 15px;
+    }
+
+    .menu-toggle {
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .menu-icon {
+      width: 30px;
+      height: 3px;
+      background-color: white;
+      margin: 6px 0;
+      border-radius: 2px;
+    }
+
+    .menu-items {
+      width: 100%;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 10px 5px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .menu-item:hover {
+      background-color: #0d47a1;
+    }
+
+    .menu-label {
+      margin-left: 10px;
+      display: none;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .sidebar.expanded .menu-label {
+      display: inline;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background-color: #1976d2;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-title img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #bbdefb;
+      border-radius: 50%;
+    }
+
+    .content {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    label {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #90caf9;
+      margin-bottom: 25px;
+      width: 220px;
+    }
+
+    .students-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 25px 20px;
+      justify-content: flex-start;
+    }
+
+    .student-card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(21, 101, 192, 0.15);
+      padding: 20px;
+      text-align: center;
+      cursor: default;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      flex: 1 1 220px;
+      max-width: 260px;
+      user-select: none;
+    }
+
+    .student-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 25px rgba(21, 101, 192, 0.3);
+    }
+
+    .student-avatar {
+      width: 70px;
+      height: 70px;
+      background-color: #bbdefb;
+      border-radius: 50%;
+      margin: 0 auto 15px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 28px;
+      color: #1565c0;
+      user-select: none;
+    }
+
+    .student-name {
+      font-weight: 600;
+      font-size: 1rem;
+      color: #0d47a1;
+      word-break: break-word;
+    }
+
+    @media (max-width: 480px) {
+      .content {
+        padding: 10px;
+        max-width: 100%;
+      }
+
+      select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="menu-icon"></div>
+      <div class="menu-icon"></div>
+      <div class="menu-icon"></div>
+    </div>
+    <div class="menu-items">
+      <a href="teacherdb.html" class="menu-item">
+        <span class="menu-label">🏠 Home</span>
+      </a>
+      <a href="classes.html" class="menu-item">
+        <span></span>
+        <span class="menu-label">🏛️ Classes</span>
+      </a>
+      <a href="#" class="menu-item active">
+        <span></span>
+        <span class="menu-label"></span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="logo-title">
+        <img src="logo.png" alt="Elevaite Logo" />
+        <h2>Elevaite</h2>
+      </div>
+      <div class="profile-icon"></div>
+    </div>
+
+    <div class="content">
+      <label for="classSelect">Select Class:</label>
+      <select id="classSelect" aria-label="Select class to display students">
+        <option value="grade11">Grade 11</option>
+        <option value="grade12">Grade 12</option>
+      </select>
+
+      <div class="students-container" id="studentsContainer" tabindex="0" aria-label="List of students">
+        <!-- Student cards go here -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const classSelect = document.getElementById('classSelect');
+    const studentsContainer = document.getElementById('studentsContainer');
+
+    function toggleMenu() {
+      sidebar.classList.toggle('expanded');
+    }
+
+    // Sample students data (20 each class)
+    const studentsData = {
+      grade11: [
+        "Alice Johnson", "Brian Lee", "Chloe Smith", "David Kim", "Eva Martinez",
+        "Felix Wong", "Grace Turner", "Harry Evans", "Isabella Clark", "Jack Wilson",
+        "Katherine Young", "Liam Scott", "Maya Robinson", "Nathan Harris", "Olivia Lewis",
+        "Paul Walker", "Quinn Turner", "Rachel Adams", "Samuel Baker", "Tina Carter"
+      ],
+      grade12: [
+        "Uma Mitchell", "Victor Reed", "Wendy Collins", "Xavier Morris", "Yara Patel",
+        "Zachary Turner", "Amy Brooks", "Blake Ross", "Caitlyn Morgan", "Derek Rivera",
+        "Emily Simmons", "Frank Hughes", "Gabriella Cox", "Hector Ward", "Ivy Bennett",
+        "Jason Price", "Kimberly Bell", "Logan Reed", "Megan Coleman", "Noah James"
+      ]
+    };
+
+    // Generate initials for avatar
+    function getInitials(name) {
+      const names = name.split(' ');
+      if (names.length === 1) return names[0].charAt(0).toUpperCase();
+      return (names[0].charAt(0) + names[1].charAt(0)).toUpperCase();
+    }
+
+    function renderStudents(className) {
+      studentsContainer.innerHTML = '';
+      if (!studentsData[className]) return;
+
+      studentsData[className].forEach(name => {
+        const card = document.createElement('div');
+        card.classList.add('student-card');
+
+        const avatar = document.createElement('div');
+        avatar.classList.add('student-avatar');
+        avatar.textContent = getInitials(name);
+
+        const studentName = document.createElement('div');
+        studentName.classList.add('student-name');
+        studentName.textContent = name;
+
+        card.appendChild(avatar);
+        card.appendChild(studentName);
+
+        studentsContainer.appendChild(card);
+      });
+    }
+
+    // Initial render
+    renderStudents(classSelect.value);
+
+    classSelect.addEventListener('change', () => {
+      renderStudents(classSelect.value);
+    });
+  </script>
+</body>
+</html>
+
+
