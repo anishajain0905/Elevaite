@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevaite - Reward Badges</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background-color: #1565c0;
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      position: relative;
+      transition: width 0.3s ease;
+      overflow: hidden;
+    }
+
+    .sidebar.expanded {
+      width: 200px;
+      align-items: flex-start;
+      padding-left: 15px;
+    }
+
+    .menu-toggle {
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .menu-icon {
+      width: 30px;
+      height: 3px;
+      background-color: white;
+      margin: 6px 0;
+    }
+
+    .menu-items {
+      width: 100%;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 10px 5px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .menu-item:hover {
+      background-color: #0d47a1;
+    }
+
+    .menu-label {
+      margin-left: 10px;
+      display: none;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .sidebar.expanded .menu-label {
+      display: inline;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background-color: #1976d2;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-title img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #bbdefb;
+      border-radius: 50%;
+    }
+
+    .content {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+      max-width: 400px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+
+    select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border-radius: 5px;
+      border: 1px solid #90caf9;
+      font-size: 1rem;
+    }
+
+    button {
+      background-color: #1976d2;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.2s;
+    }
+
+    button:hover {
+      background-color: #0d47a1;
+    }
+
+    /* Scrollbar for content */
+    .content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background-color: rgba(21, 101, 192, 0.5);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="menu-icon"></div>
+      <div class="menu-icon"></div>
+      <div class="menu-icon"></div>
+    </div>
+    <div class="menu-items">
+         <a href="teacherdb.html" class="menu-item">
+        <span>🏠</span>
+        <span class="menu-label">Home</span>
+      </a>
+      <a href="classes.html" class="menu-item">
+        <span class="menu-label">🏛️ Classes</span>
+      </a>
+      <a href="sprogress.html" class="menu-item">
+        <span>📈</span>
+        <span class="menu-label">Progress</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="logo-title">
+        <img src="logo.png" alt="Elevaite Logo" />
+        <h2>Elevaite</h2>
+      </div>
+      <div class="profile-icon"></div>
+    </div>
+
+    <div class="content">
+      <div class="card">
+        <h3>Reward a Badge</h3>
+
+        <label for="classSelect">Select Class:</label>
+        <select id="classSelect" aria-label="Select class">
+          <option value="grade11">Grade 11</option>
+          <option value="grade12">Grade 12</option>
+        </select>
+
+        <label for="studentSelect">Select Student:</label>
+        <select id="studentSelect" aria-label="Select student">
+          <!-- Students will be loaded dynamically -->
+        </select>
+
+        <label for="badgeSelect">Select Badge:</label>
+        <select id="badgeSelect" aria-label="Select badge">
+          <option value="star">🌟 Star Performer</option>
+          <option value="helping">🤝 Helping Hand</option>
+          <option value="improvement">📈 Most Improved</option>
+          <option value="attendance">🕒 Perfect Attendance</option>
+        </select>
+
+        <button id="rewardBtn">Reward Badge</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const classSelect = document.getElementById('classSelect');
+    const studentSelect = document.getElementById('studentSelect');
+    const badgeSelect = document.getElementById('badgeSelect');
+    const rewardBtn = document.getElementById('rewardBtn');
+
+    const students = {
+      grade11: [
+        "Alice Johnson",
+        "Brian Lee",
+        "Chloe Smith",
+        "David Kim"
+      ],
+      grade12: [
+        "Emma Davis",
+        "Frank Wilson",
+        "Grace Chen",
+        "Henry Patel"
+      ]
+    };
+
+    function toggleMenu() {
+      sidebar.classList.toggle('expanded');
+    }
+
+    function loadStudents(className) {
+      // Clear existing options
+      studentSelect.innerHTML = '';
+      if (students[className]) {
+        students[className].forEach(name => {
+          const option = document.createElement('option');
+          option.value = name;
+          option.textContent = name;
+          studentSelect.appendChild(option);
+        });
+      }
+    }
+
+    // Initial load for Grade 11
+    loadStudents(classSelect.value);
+
+    classSelect.addEventListener('change', () => {
+      loadStudents(classSelect.value);
+    });
+
+    rewardBtn.addEventListener('click', () => {
+      const selectedClass = classSelect.value;
+      const studentName = studentSelect.value;
+      const badgeName = badgeSelect.options[badgeSelect.selectedIndex].text;
+
+      if (!studentName) {
+        alert("Please select a student to reward.");
+        return;
+      }
+
+      alert(`You have rewarded "${badgeName}" to ${studentName} (${selectedClass}).`);
+    });
+  </script>
+</body>
+</html>
