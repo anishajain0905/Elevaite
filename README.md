@@ -1,12 +1,22 @@
-# Elevaite #project
-A personalized game-fied webapp made for students to prevent procrastination and improve timemanagement.
-A gamefied webapp made for students to prevent procrastination and improve timemanagement by incorporating assignments and tasks given by school teacher and including games, personalised AI planner, leaderboards, AI assistant, Badges etc
-has features like dark mode and light mode
-Different dashboard for students and teachers, students one has a more fun and engaging layout while the teacher one has a more minimalist and easily accessible layout for convinience.
-The business model includes either individual plan with two payment options monthly and yearly or a school plan where the school can buy webapp plan and give it to the students and teachers.
-This has the code for the UI/UX of Elevaite.
-The code uses Gpt 4.0 API model for AI assistant and personal planner, which has not been added due to risk of it being misused
+# 📚 ElevAIte  
+
 Group Project – IBM High School Internship (GitHub managed individually)
-Developed a web app aimed at making high school learning engaging and interactive. Although a group project, I was primarily responsible for managing the GitHub repository, the entire front-end development, UI/UX and implementing the final application files. 
-Documented the workflow and final build in detail.
-Tech used: HTML, CSS, JavaScript , GPT 4.0 API model[not included here]
+
+A personalized, gamified web app designed to help students prevent procrastination and improve time management.  
+I was primarily responsible for managing the GitHub repository, leading the front-end development, and designing the UI/UX to deliver an engaging and practical experience.  
+
+Key Features:
+- Task & assignment integration from teachers  
+- Gamified learning with badges, leaderboards, and rewards  
+- Personalized AI planner and assistant (powered by GPT‑4 API, not included here for security reasons)  
+- Dual dashboards:  
+  - **Student** → colorful, fun, and interactive  
+  - **Teacher** → minimalist, efficient, and easy to navigate  
+- Dark mode & light mode  
+- Business model: individual subscription plans (monthly/yearly) and institutional licensing for schools  
+
+Tech used:
+- HTML  
+- CSS  
+- JavaScript  
+- GPT‑4 API (AI assistant & planner – not included here)  
