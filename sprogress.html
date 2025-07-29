@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Elevaite - Class Progress</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      background-color: #e3f2fd;
+      color: #0d47a1;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      background-color: #1565c0;
+      width: 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px 0;
+      position: relative;
+      transition: width 0.3s ease;
+      overflow: hidden;
+    }
+
+    .sidebar.expanded {
+      width: 200px;
+      align-items: flex-start;
+      padding-left: 15px;
+    }
+
+    .menu-toggle {
+      cursor: pointer;
+      margin-bottom: 20px;
+    }
+
+    .menu-icon {
+      width: 30px;
+      height: 3px;
+      background-color: white;
+      margin: 6px 0;
+    }
+
+    .menu-items {
+      width: 100%;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      color: white;
+      padding: 10px 5px;
+      text-decoration: none;
+      border-radius: 5px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+
+    .menu-item:hover {
+      background-color: #0d47a1;
+    }
+
+    .menu-label {
+      margin-left: 10px;
+      display: none;
+      white-space: nowrap;
+      font-weight: 600;
+    }
+
+    .sidebar.expanded .menu-label {
+      display: inline;
+    }
+
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topbar {
+      background-color: #1976d2;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-title img {
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #bbdefb;
+      border-radius: 50%;
+    }
+
+    .content {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      max-width: 700px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #90caf9;
+      margin-bottom: 20px;
+      width: 200px;
+    }
+
+    .progress-detail {
+      font-size: 1rem;
+      line-height: 1.5;
+    }
+
+    /* Scrollbar for content */
+    .content::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .content::-webkit-scrollbar-thumb {
+      background-color: rgba(21, 101, 192, 0.5);
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar" id="sidebar">
+    <div class="menu-toggle" onclick="toggleMenu()">
+      <div class="menu-icon"></div>
+      <div class="menu-icon"></div>
+      <div class="menu-icon"></div>
+    </div>
+    <div class="menu-items">
+      <a href="teacherdb.html" class="menu-item">
+        <span>🏠</span>
+        <span class="menu-label">Home</span>
+      </a>
+      <a href="classes.html" class="menu-item">
+        <span class="menu-label">🏛️ Classes</span>
+      </a>
+      <a href="rbadges.html" class="menu-item">
+        <span>🏅</span>
+        <span class="menu-label">Reward Badges</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="topbar">
+      <div class="logo-title">
+        <img src="logo.png" alt="Elevaite Logo" />
+        <h2>Elevaite</h2>
+      </div>
+      <div class="profile-icon"></div>
+    </div>
+
+    <div class="content">
+      <label for="classSelect"><strong>Select Class:</strong></label>
+      <select id="classSelect" aria-label="Select class to view progress">
+        <option value="grade11">Grade 11</option>
+        <option value="grade12">Grade 12</option>
+        <option value="all">All Classes</option>
+      </select>
+
+      <div id="grade11Progress" class="progress-section">
+        <div class="card">
+          <h3>Grade 11 Progress</h3>
+          <p class="progress-detail">
+            • Students Enrolled: 35<br />
+            • Completed Assignments: 120<br />
+            • Average Score: 83%<br />
+            • Upcoming Deadlines: 3 assignments due next week
+          </p>
+        </div>
+      </div>
+
+      <div id="grade12Progress" class="progress-section" style="display:none;">
+        <div class="card">
+          <h3>Grade 12 Progress</h3>
+          <p class="progress-detail">
+            • Students Enrolled: 28<br />
+            • Completed Assignments: 95<br />
+            • Average Score: 88%<br />
+            • Upcoming Deadlines: 2 assignments due next week
+          </p>
+        </div>
+      </div>
+
+      <div id="allProgress" class="progress-section" style="display:none;">
+        <div class="card">
+          <h3>Combined Progress Overview</h3>
+          <canvas id="progressChart" width="600" height="350"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script>
+    const sidebar = document.getElementById('sidebar');
+    const classSelect = document.getElementById('classSelect');
+    const grade11Progress = document.getElementById('grade11Progress');
+    const grade12Progress = document.getElementById('grade12Progress');
+    const allProgress = document.getElementById('allProgress');
+
+    let chartInstance = null;
+
+    function toggleMenu() {
+      sidebar.classList.toggle('expanded');
+    }
+
+    classSelect.addEventListener('change', () => {
+      const val = classSelect.value;
+      grade11Progress.style.display = 'none';
+      grade12Progress.style.display = 'none';
+      allProgress.style.display = 'none';
+
+      if (val === 'grade11') {
+        grade11Progress.style.display = 'block';
+      } else if (val === 'grade12') {
+        grade12Progress.style.display = 'block';
+      } else if (val === 'all') {
+        allProgress.style.display = 'block';
+        renderChart();
+      }
+    });
+
+    function renderChart() {
+      const ctx = document.getElementById('progressChart').getContext('2d');
+
+      // Destroy old chart instance if exists to avoid duplication
+      if(chartInstance) {
+        chartInstance.destroy();
+      }
+
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Grade 11', 'Grade 12'],
+          datasets: [
+            {
+              label: 'Average Score (%)',
+              data: [83, 88],
+              backgroundColor: '#1976d2'
+            },
+            {
+              label: 'Completed Assignments',
+              data: [120, 95],
+              backgroundColor: '#42a5f5'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                stepSize: 10
+              },
+              title: {
+                display: true,
+                text: 'Count / Percentage'
+              }
+            }
+          },
+          plugins: {
+            legend: {
+              position: 'top',
+            },
+            tooltip: {
+              enabled: true,
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
+
