@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Fun Revision Games</title>
+<link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+    :root {
+      --bg-light: linear-gradient(135deg,#89a8db, #a0b9ed);
+      --bg-dark: linear-gradient(135deg, #113558, #333232);
+      --text-light: #000;
+      --text-dark: #181717;
+      --primary-light: #0f2f91;
+      --primary-dark: #88ade9;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', Georgia;
+      font-weight: bold;
+      background: var(--bg-light);
+      color: var(--text-light);
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    .title {
+      font-family: 'Bitcount Grid Double', Georgia;
+    }
+
+    .sidebar {
+      width: 65px;
+      background-color: #d0e7fb; /* lighter blue for light mode */
+      transition: width 0.3s;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+
+    body.dark-mode .sidebar {
+      background-color: #333;
+    }
+
+    .sidebar.open {
+      width: 320px;
+    }
+
+    .burger-icon {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      padding: 20px;
+    }
+
+    .burger-icon div {
+      width: 35px;
+      height: 5px;
+      border-radius: 5px;
+    }
+
+    .burger-icon .line1,
+    .burger-icon .line3 {
+      background-color: black;
+    }
+
+    .burger-icon .line2 {
+      background-color: #2196f3; /* Blue */
+    }
+
+    .menu-items {
+      margin-top: 30px;
+      padding-left: 20px;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .sidebar.open .menu-items {
+      display: flex;
+    }
+
+    .menu-items span {
+      font-size: 20px;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    .menu-items span:hover {
+      color: var(--primary-light);
+    }
+    .container {
+      background-color: rgb(158, 176, 219);
+      padding: 40px;
+      border-radius: 16px;
+      width: 90vw;
+      max-width: 1500px;
+      text-align: center;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      width: 80%;
+      position: relative;
+    }
+
+
+    .top-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px;
+      background-color: var(--primary-light);
+      color: white;
+      position: relative;
+    }
+
+    body.dark-mode .top-bar{
+      background-color: #000000;
+    }
+
+    .top-bar .title {
+      font-family: 'Bitcount Grid Double', Georgia;
+      font-size: 28px;
+      font-weight: 700;
+      user-select: none;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 1px;
+    }
+
+    .logo {
+      height: 36px;
+      width: auto;
+    }
+
+    .top-bar .right-controls {
+      display: flex;
+      gap: 20px;
+      margin-left: auto;
+      align-items: center;
+    }
+
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-image: url('https://cdn-icons-png.flaticon.com/512/847/847969.png');
+      background-size: cover;
+      background-position: center;
+      cursor: pointer;
+    }
+
+    .toggle-switch {
+      background-color: #ffffff55;
+      border: 2px solid white;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      transition: background 0.3s;
+      user-select: none;
+    }
+
+    .toggle-switch:hover {
+      background-color: #9cd4e888;
+    }
+
+    .main-content {
+      flex: 1;
+      padding: 40px 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .main-content h1 {
+      font-size: 70px;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+    .ai-assistant {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background-color: #6e78ff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      z-index: 999;
+      transition: background 0.3s;
+    }
+
+    .ai-assistant:hover {
+      background-color: #999ff7;
+    }
+
+    .ai-assistant img {
+      width: 32px;
+      height: 32px;
+    }
+
+    .chat-popup {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 300px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 998;
+    }
+
+    .chat-popup-header {
+      background-color: #6e78ff;
+      color: white;
+      padding: 15px;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .chat-popup-body {
+      padding: 15px;
+      font-size: 14px;
+      height: 120px;
+      overflow-y: auto;
+      color : #000000
+    }
+
+    .chat-popup-body p {
+      margin: 0;
+    }
+
+    .chat-popup-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ccc;
+    }
+
+    .chat-popup-input input {
+      flex: 1;
+      padding: 8px 10px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    .chat-popup-input button {
+      margin-left: 8px;
+      padding: 8px 12px;
+      background-color: #6e78ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chat-popup-input button:hover {
+      background-color: #6e78ff;
+    }
+    a.menu-link:link {
+      color: black;
+      text-decoration: none;
+    }
+
+    a.menu-link:visited {
+      color: rgb(0, 0, 0);
+    }
+
+    a.menu-link:hover {
+      text-decoration: underline;
+      color: #0f2f91;
+    }
+
+    a.menu-link:active {
+      color: black;
+    }
+    .profile-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    .profile-content {
+      background: #fff;
+      color: black;
+      padding: 30px;
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      min-width: 300px;
+      font-family: 'Poppins';
+      align-items: center;
+    }
+
+    .profile-content select {
+      margin-left: 10px;
+    } 
+  h1, h2 {
+    margin-bottom: 20px;
+  }
+  .game-btn, .nav-btn {
+    display: inline-block;
+    padding: 15px 30px;
+    margin: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    background: #0072ff;
+    color: white;
+    transition: background 0.3s;
+  }
+  .game-btn:hover, .nav-btn:hover {
+    background: #0056cc;
+  }
+  .hidden { display: none; }
+  /* Quiz Options */
+  .quiz-option {
+    background: #0072ff;
+    color: white;
+    margin: 10px auto;
+    padding: 12px 20px;
+    border-radius: 10px;
+    max-width: 400px;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  .quiz-option.correct {
+    background-color: #2ecc71 !important;
+    color: white !important;
+  }
+  .quiz-option.wrong {
+    background-color: #e74c3c !important;
+    color: white !important;
+  }
+  /* Memory Match Styles */
+  #memoryBoard {
+    margin: 20px auto;
+    max-width: 600px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+  }
+  .card {
+    background: #0072ff;
+    color: white;
+    height: 120px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    position: relative;
+    transition: background-color 0.3s;
+  }
+  .card.flipped {
+    background: #fff;
+    color: #0072ff;
+    cursor: default;
+    box-shadow: 0 0 10px #0072ff;
+  }
+  .card.matched {
+    background: #2ecc71 !important;
+    color: white !important;
+    cursor: default;
+    box-shadow: 0 0 15px #27ae60;
+  }
+  .card.wrong {
+    background: #e74c3c !important;
+    color: white !important;
+  }
+</style>
+</head>
+<body>
+    <body>
+  <div class="sidebar" id="sidebar">
+    <div class="burger-icon" onclick="toggleMenu()">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+    </div>
+    <div class="menu-items">
+      <li><a href="home page v2.html" class="menu-link">🏠 Home</a></li>
+      <li><a href="progress.html" class="menu-link">📈 Progress Graph</a></li>
+      <li><a href="badges.html" class="menu-link">🏅 Badges</a></li>
+      <li><a href="plannerv2.html" class="menu-link">🗓️ Plan</a></li>
+      <li><a href="leaderboard.html" class="menu-link">📊 Leaderboard</a></li>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="top-bar">
+      <div class="title">ELEVAITE
+        <img src="logo.png" alt="ElevAIte Logo" class="logo" />
+      </div>
+      <div class="right-controls">
+        <div class="toggle-switch" id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</div>
+        <div class="profile-icon" title="User Profile">
+        </div>
+      </div>
+    </div>
+
+  <div class="ai-assistant" title="Open AI Assistant" onclick="toggleChat()">
+    <img src="https://cdn-icons-png.flaticon.com/512/5817/5817035.png" alt="AI Assistant">
+  </div>
+
+  <div class="chat-popup" id="chatPopup">
+    <div class="chat-popup-header">AI Assistant</div>
+    <div class="chat-popup-body">
+      <p>Hey there! 👋<br>I'm your study buddy. Ask me anything and I'll try my best to answer your questions!</p>
+    </div>
+    <div class="chat-popup-input">
+      <input type="text" placeholder="Type your question...">
+      <button>Send</button>
+    </div>
+  </div>
+
+  <div class="container">
+    <h1 id="mainTitle">Choose Your Game 🎮</h1>
+    <button class="game-btn" onclick="chooseGame('typing')">Typing Race</button>
+    <button class="game-btn" onclick="chooseGame('memory')">Memory Match</button>
+    <button class="game-btn" onclick="chooseGame('quiz')">Quick Quiz</button>
+    <button class="game-btn" onclick="chooseGame('flashcards')">Flashcards</button>
+
+  <div id="subjectSelect" class="hidden">
+    <h2>Select Subject</h2>
+    <select id="subject">
+      <option value="economics">Economics</option>
+      <option value="physics">Physics</option>
+      <option value="biology">Biology</option>
+      <option value="cs">Computer Science</option>
+      <option value="math">Mathematics</option>
+      <option value="chemistry">Chemistry</option>
+    </select>
+    <br /><br />
+    <button onclick="goToGame()" class="nav-btn">Next ➡️</button>
+  </div>
+
+  <div id="gameArea" class="hidden">
+    <h2 id="gameTitle"></h2>
+    <p id="gameInstructions">Press Start to begin!</p>
+    <div id="gameContent"></div>
+    <button onclick="goBackToMain()" class="nav-btn">⬅️ Back</button>
+  </div>
+</div>
+<script>
+let selectedGame = '', subject = 'economics';
+const subjects = {
+  economics: [
+    { term: "Elasticity", def: "The responsiveness of quantity demanded or supplied to a change in price." },
+    { term: "Inflation", def: "The rate at which general prices for goods and services rise." },
+    { term: "Opportunity Cost", def: "The next best alternative foregone when a decision is made." },
+    { term: "Subsidy", def: "A government payment to support a business or market." },
+    { term: "Marginal Utility", def: "The extra satisfaction from consuming one more unit." },
+    { term: "Monopoly", def: "Market structure where one firm dominates the entire market." },
+    { term: "Externality", def: "Cost or benefit affecting a third party not involved in the transaction." },
+    { term: "Demand", def: "Quantity of a good consumers are willing to buy at different prices." },
+    { term: "Supply", def: "Quantity of a good producers are willing to sell at different prices." },
+    { term: "GDP", def: "Total monetary value of all finished goods and services produced in a country." },
+    { term: "Fiscal Policy", def: "Government adjustments to spending and taxation to influence the economy." },
+    { term: "Monetary Policy", def: "Central bank actions to control money supply and interest rates." },
+    { term: "Perfect Competition", def: "Market with many firms selling identical products with no barriers." },
+    { term: "Oligopoly", def: "Market dominated by a few large firms with interdependent decisions." },
+    { term: "Price Ceiling", def: "Maximum legal price that can be charged for a good or service." },
+    { term: "Price Floor", def: "Minimum legal price set above equilibrium price." },
+    { term: "Trade Balance", def: "Difference between the value of exports and imports." },
+    { term: "Capital", def: "Assets used in production like machinery and buildings." },
+    { term: "Labour", def: "Human effort used in production of goods and services." },
+    { term: "Market Failure", def: "When markets fail to allocate resources efficiently." }
+  ],
+  physics: [
+    { term: "Velocity", def: "Speed in a given direction." },
+    { term: "Force", def: "An interaction that changes motion." },
+    { term: "Power", def: "Rate of doing work or energy transfer." },
+    { term: "Acceleration", def: "Rate of change of velocity." },
+    { term: "Momentum", def: "Mass times velocity." },
+    { term: "Energy", def: "The ability to do work." },
+    { term: "Work", def: "Force times distance moved in the direction of force." },
+    { term: "Kinetic Energy", def: "Energy an object has due to motion." },
+    { term: "Potential Energy", def: "Energy stored due to position or configuration." },
+    { term: "Newton's First Law", def: "An object at rest stays at rest unless acted on by a force." },
+    { term: "Newton's Second Law", def: "Force equals mass times acceleration (F=ma)." },
+    { term: "Newton's Third Law", def: "For every action, there is an equal and opposite reaction." },
+    { term: "Density", def: "Mass per unit volume of a substance." },
+    { term: "Pressure", def: "Force applied per unit area." },
+    { term: "Frequency", def: "Number of waves passing a point per second." },
+    { term: "Amplitude", def: "Maximum displacement from equilibrium position." },
+    { term: "Wavelength", def: "Distance between two successive points in phase on a wave." },
+    { term: "Electric Current", def: "Flow of electric charge." },
+    { term: "Voltage", def: "Electric potential difference between two points." },
+    { term: "Resistance", def: "Opposition to the flow of electric current." }
+  ],
+  biology: [
+    { term: "Cell", def: "Basic unit of life." },
+    { term: "DNA", def: "Molecule carrying genetic instructions." },
+    { term: "Photosynthesis", def: "Process by which plants make food using sunlight." },
+    { term: "Mitochondria", def: "Organelle producing energy in the cell." },
+    { term: "Osmosis", def: "Movement of water through a semipermeable membrane." },
+    { term: "Homeostasis", def: "Maintenance of stable internal environment." },
+    { term: "Enzyme", def: "Protein that speeds up chemical reactions." },
+    { term: "Chlorophyll", def: "Green pigment used in photosynthesis." },
+    { term: "Genotype", def: "Genetic makeup of an organism." },
+    { term: "Phenotype", def: "Observable traits of an organism." },
+    { term: "Respiration", def: "Process of breaking down food to release energy." },
+    { term: "Mutation", def: "Change in the DNA sequence." },
+    { term: "Diffusion", def: "Movement of molecules from high to low concentration." },
+    { term: "Nucleus", def: "Organelle containing genetic material." },
+    { term: "Protein", def: "Macromolecule made of amino acids." },
+    { term: "Hormone", def: "Chemical messenger in the body." },
+    { term: "Antibody", def: "Protein that helps fight infections." },
+    { term: "Reproduction", def: "Process of producing offspring." },
+    { term: "Evolution", def: "Change in species over generations." },
+    { term: "Ecosystem", def: "Community of interacting organisms and their environment." }
+  ],
+  cs: [
+    { term: "Algorithm", def: "Step-by-step instructions to solve a problem." },
+    { term: "Variable", def: "Storage location for data." },
+    { term: "Function", def: "Reusable block of code performing a task." },
+    { term: "Array", def: "Collection of elements identified by index." },
+    { term: "Class", def: "Blueprint for creating objects." },
+    { term: "Object", def: "Instance of a class." },
+    { term: "Inheritance", def: "Mechanism to create a new class from an existing one." },
+    { term: "Encapsulation", def: "Hiding internal data of an object." },
+    { term: "Polymorphism", def: "Ability to use a function in different ways." },
+    { term: "Recursion", def: "Function calling itself." },
+    { term: "Binary", def: "Number system using 0 and 1." },
+    { term: "Compiler", def: "Program that translates code to machine language." },
+    { term: "Loop", def: "Repeating a set of instructions." },
+    { term: "Stack", def: "Data structure using LIFO principle." },
+    { term: "Queue", def: "Data structure using FIFO principle." },
+    { term: "Database", def: "Organized collection of data." },
+    { term: "API", def: "Interface for software to communicate." },
+    { term: "Debugging", def: "Process of finding and fixing errors." },
+    { term: "Syntax", def: "Rules for writing code." },
+    { term: "Variable Scope", def: "Region where a variable is accessible." }
+  ],
+  math: [
+    { term: "Derivative", def: "Instantaneous rate of change of a function." },
+    { term: "Integral", def: "Area under a curve." },
+    { term: "Matrix", def: "Rectangular array of numbers." },
+    { term: "Vector", def: "Quantity with magnitude and direction." },
+    { term: "Probability", def: "Measure of likelihood of an event." },
+    { term: "Function", def: "Relation mapping inputs to outputs." },
+    { term: "Limit", def: "Value a function approaches." },
+    { term: "Logarithm", def: "Inverse operation of exponentiation." },
+    { term: "Factorization", def: "Expressing a number as product of factors." },
+    { term: "Permutation", def: "Arrangement of objects in order." },
+    { term: "Combination", def: "Selection of objects without order." },
+    { term: "Hypotenuse", def: "Longest side of a right triangle." },
+    { term: "Mean", def: "Average of numbers." },
+    { term: "Median", def: "Middle value in a data set." },
+    { term: "Mode", def: "Most frequent value in a data set." },
+    { term: "Pythagoras' Theorem", def: "a² + b² = c² in right triangles." },
+    { term: "Quadratic Equation", def: "Equation of degree 2." },
+    { term: "Slope", def: "Steepness of a line." },
+    { term: "Axis", def: "Reference lines in a coordinate plane." },
+    { term: "Radius", def: "Distance from center to edge of a circle." }
+  ],
+  chemistry: [
+    { term: "Atom", def: "Smallest unit of an element." },
+    { term: "Molecule", def: "Two or more atoms bonded together." },
+    { term: "Ion", def: "Charged atom or molecule." },
+    { term: "Acid", def: "Substance that donates protons." },
+    { term: "Base", def: "Substance that accepts protons." },
+    { term: "pH", def: "Measure of acidity or alkalinity." },
+    { term: "Covalent Bond", def: "Sharing of electron pairs between atoms." },
+    { term: "Ionic Bond", def: "Electrostatic attraction between ions." },
+    { term: "Molarity", def: "Concentration of a solution." },
+    { term: "Catalyst", def: "Substance that speeds up a reaction without being used." },
+    { term: "Electronegativity", def: "Atom's ability to attract electrons." },
+    { term: "Isotope", def: "Atoms with same protons but different neutrons." },
+    { term: "Oxidation", def: "Loss of electrons." },
+    { term: "Reduction", def: "Gain of electrons." },
+    { term: "Solubility", def: "Ability of substance to dissolve." },
+    { term: "Periodic Table", def: "Chart of elements arranged by atomic number." },
+    { term: "Valence Electrons", def: "Electrons in outer shell." },
+    { term: "Chemical Reaction", def: "Process where substances change into new ones." },
+    { term: "Exothermic", def: "Reaction that releases heat." },
+    { term: "Endothermic", def: "Reaction that absorbs heat." }
+  ]
+};
+
+function chooseGame(game) {
+  selectedGame = game;
+  document.getElementById('mainTitle').classList.add('hidden');
+  document.querySelectorAll('.game-btn').forEach(btn => btn.classList.add('hidden'));
+  document.getElementById('subjectSelect').classList.remove('hidden');
+}
+
+function goToGame() {
+  subject = document.getElementById('subject').value;
+  document.getElementById('subjectSelect').classList.add('hidden');
+  document.getElementById('gameArea').classList.remove('hidden');
+  document.getElementById('gameTitle').innerText = `${selectedGame.toUpperCase()} - ${subject.toUpperCase()}`;
+
+  const content = document.getElementById('gameContent');
+  content.innerHTML = '';
+  if (selectedGame === 'typing') initTypingGame(content);
+  else if (selectedGame === 'memory') initMemoryGame(content);
+  else if (selectedGame === 'quiz') initQuizGame(content);
+  else if (selectedGame === 'flashcards') initFlashcardGame(content);
+}
+
+function goBackToMain() {
+  document.getElementById('mainTitle').classList.remove('hidden');
+  document.querySelectorAll('.game-btn').forEach(btn => btn.classList.remove('hidden'));
+  document.getElementById('gameArea').classList.add('hidden');
+}
+
+// Typing Game
+function initTypingGame(container) {
+  const terms = subjects[subject];
+  let score = 0, correct = 0, wrong = 0;
+
+  container.innerHTML = `
+    <p id="typingDef"></p>
+    <input type="text" id="typingInput" placeholder="Type your answer here...">
+    <p>Score: <span id="score">0</span> | Correct: <span id="correct">0</span> | Wrong: <span id="wrong">0</span></p>
+    <button id="stopBtn" class="nav-btn" style="background:#cc0000">Stop</button>
+    <div id="summary" class="hidden">
+      <h3>Game Summary</h3>
+      <p>Total Score: <span id="finalScore"></span></p>
+      <p>Correct: <span id="finalCorrect"></span></p>
+      <p>Wrong: <span id="finalWrong"></span></p>
+    </div>
+  `;
+
+  const defEl = document.getElementById('typingDef');
+  const input = document.getElementById('typingInput');
+  const scoreEl = document.getElementById('score');
+  const correctEl = document.getElementById('correct');
+  const wrongEl = document.getElementById('wrong');
+  const summaryEl = document.getElementById('summary');
+
+  let current = randomTerm();
+
+  defEl.textContent = current.def;
+  input.focus();
+
+  function handleInput(e) {
+    if (e.key === 'Enter') {
+      const userAnswer = input.value.trim().toLowerCase();
+      if (userAnswer === current.term.toLowerCase()) {
+        score++; correct++;
+      } else {
+        wrong++;
+      }
+      scoreEl.textContent = score;
+      correctEl.textContent = correct;
+      wrongEl.textContent = wrong;
+      input.value = '';
+      current = randomTerm();
+      defEl.textContent = current.def;
+    }
+  }
+
+  input.addEventListener('keydown', handleInput);
+
+  document.getElementById('stopBtn').onclick = () => {
+    input.disabled = true;
+    summaryEl.classList.remove('hidden');
+    document.getElementById('finalScore').innerText = score;
+    document.getElementById('finalCorrect').innerText = correct;
+    document.getElementById('finalWrong').innerText = wrong;
+    input.removeEventListener('keydown', handleInput);
+  };
+
+  function randomTerm() {
+    return terms[Math.floor(Math.random() * terms.length)];
+  }
+}
+
+// Memory Match Game
+function initMemoryGame(container) {
+  const terms = subjects[subject];
+  let flippedCards = [];
+  let matchedPairs = 0;
+
+  container.innerHTML = `
+    <div id="memoryBoard"></div>
+    <p>Pairs matched: <span id="memoryScore">0</span></p>
+    <button id="resetMemory" class="nav-btn" style="margin-top:20px;">Restart Memory Match</button>
+  `;
+
+  const board = document.getElementById('memoryBoard');
+  const memoryScore = document.getElementById('memoryScore');
+  const resetBtn = document.getElementById('resetMemory');
+
+  // Use up to 8 pairs max for grid (16 cards)
+  const pairs = terms.slice(0, 8);
+  let cards = [];
+  pairs.forEach((item, idx) => {
+    cards.push({ id: idx*2, content: item.term, type: 'term' });
+    cards.push({ id: idx*2+1, content: item.def, type: 'def' });
+  });
+
+  cards = shuffle(cards);
+
+  renderBoard();
+
+  function renderBoard() {
+    board.innerHTML = '';
+    cards.forEach(card => {
+      const cardDiv = document.createElement('div');
+      cardDiv.classList.add('card');
+      cardDiv.dataset.id = card.id;
+      cardDiv.dataset.content = card.content;
+      cardDiv.dataset.type = card.type;
+      cardDiv.textContent = '';
+      cardDiv.addEventListener('click', onCardClick);
+      board.appendChild(cardDiv);
+    });
+    flippedCards = [];
+    matchedPairs = 0;
+    updateScore();
+  }
+
+  function onCardClick(e) {
+    const card = e.currentTarget;
+    if (flippedCards.length >= 2) return;
+    if (card.classList.contains('flipped') || card.classList.contains('matched')) return;
+
+    flipCard(card);
+    flippedCards.push(card);
+
+    if (flippedCards.length === 2) {
+      checkMatch();
+    }
+  }
+
+  function flipCard(card) {
+    card.classList.add('flipped');
+    card.textContent = card.dataset.content;
+  }
+
+  function unflipCards() {
+    flippedCards.forEach(card => {
+      card.classList.remove('flipped', 'wrong');
+      card.textContent = '';
+    });
+    flippedCards = [];
+  }
+
+  function checkMatch() {
+    const [card1, card2] = flippedCards;
+
+    // Check if term-def pair matches
+    const isMatch = pairs.some(item => 
+      (card1.dataset.content === item.term && card2.dataset.content === item.def) ||
+      (card2.dataset.content === item.term && card1.dataset.content === item.def)
+    );
+
+    if (isMatch) {
+      card1.classList.add('matched');
+      card2.classList.add('matched');
+      matchedPairs++;
+      flippedCards = [];
+      updateScore();
+      if (matchedPairs === pairs.length) {
+        setTimeout(() => alert('🎉 You matched all pairs!'), 200);
+      }
+    } else {
+      card1.classList.add('wrong');
+      card2.classList.add('wrong');
+      setTimeout(() => {
+        unflipCards();
+      }, 1000);
+    }
+  }
+
+  function updateScore() {
+    memoryScore.textContent = matchedPairs;
+  }
+
+  resetBtn.onclick = () => {
+    cards = shuffle(cards);
+    renderBoard();
+  };
+
+  function shuffle(array) {
+    for(let i = array.length -1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+}
+
+// Quick Quiz Game
+function initQuizGame(container) {
+  const terms = subjects[subject];
+  let score = 0, correct = 0, wrong = 0;
+  let currentIndex = 0;
+
+  container.innerHTML = `
+    <p id="quizDef"></p>
+    <div id="quizOptions"></div>
+    <p>Score: <span id="quizScore">0</span> | Correct: <span id="quizCorrect">0</span> | Wrong: <span id="quizWrong">0</span></p>
+    <button id="stopQuiz" class="nav-btn" style="background:#cc0000">Stop</button>
+    <div id="quizSummary" class="hidden">
+      <h3>Quiz Summary</h3>
+      <p>Total Score: <span id="quizFinalScore"></span></p>
+      <p>Correct: <span id="quizFinalCorrect"></span></p>
+      <p>Wrong: <span id="quizFinalWrong"></span></p>
+    </div>
+  `;
+
+  const defEl = document.getElementById('quizDef');
+  const optionsEl = document.getElementById('quizOptions');
+  const scoreEl = document.getElementById('quizScore');
+  const correctEl = document.getElementById('quizCorrect');
+  const wrongEl = document.getElementById('quizWrong');
+  const summaryEl = document.getElementById('quizSummary');
+  const stopBtn = document.getElementById('stopQuiz');
+
+  function getRandomWrongOptions(correctTerm) {
+    let wrongOpts = terms.filter(t => t.term !== correctTerm);
+    wrongOpts = shuffle(wrongOpts);
+    return wrongOpts.slice(0, 3).map(o => o.term);
+  }
+
+  function nextQuestion() {
+    if (currentIndex >= terms.length) {
+      currentIndex = 0; // Loop around
+    }
+    const current = terms[currentIndex++];
+    defEl.textContent = current.def;
+
+    const options = getRandomWrongOptions(current.term);
+    options.push(current.term);
+    shuffle(options);
+
+    optionsEl.innerHTML = '';
+    let answered = false;
+
+    options.forEach(opt => {
+      const btn = document.createElement('div');
+      btn.className = 'quiz-option';
+      btn.textContent = opt;
+      btn.onclick = () => {
+        if (answered) return;
+        answered = true;
+        if (opt === current.term) {
+          btn.classList.add('correct');
+          score++; correct++;
+        } else {
+          btn.classList.add('wrong');
+          wrong++;
+          // Highlight correct answer as well
+          Array.from(optionsEl.children).forEach(child => {
+            if (child.textContent === current.term) {
+              child.classList.add('correct');
+            }
+          });
+        }
+        scoreEl.textContent = score;
+        correctEl.textContent = correct;
+        wrongEl.textContent = wrong;
+
+        // After 1 sec go to next question
+        setTimeout(nextQuestion, 1000);
+      };
+      optionsEl.appendChild(btn);
+    });
+  }
+
+  nextQuestion();
+
+  stopBtn.onclick = () => {
+    // Disable clicks
+    Array.from(optionsEl.children).forEach(btn => btn.onclick = null);
+    summaryEl.classList.remove('hidden');
+    document.getElementById('quizFinalScore').innerText = score;
+    document.getElementById('quizFinalCorrect').innerText = correct;
+    document.getElementById('quizFinalWrong').innerText = wrong;
+  };
+
+  function shuffle(array) {
+    for(let i = array.length -1; i > 0; i--){
+      const j = Math.floor(Math.random() * (i+1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+}
+
+// Flashcards placeholder
+function initFlashcardGame(container) {
+  container.innerHTML = `<p>📚 Flashcards Game coming soon!</p>`;
+}
+    function toggleMenu() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    function toggleDarkMode() {
+      const body = document.body;
+      const toggleBtn = document.getElementById('darkModeToggle');
+      body.classList.toggle('dark-mode');
+      toggleBtn.textContent = body.classList.contains('dark-mode')
+        ? '☀️ Light Mode'
+        : '🌙 Dark Mode';
+    }
+
+    function toggleChat() {
+      const chat = document.getElementById('chatPopup');
+      chat.style.display = chat.style.display === 'flex' ? 'none' : 'flex';
+    }
+</script>
+</body>
+</html>
