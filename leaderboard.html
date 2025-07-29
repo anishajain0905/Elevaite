@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ElevAIte - Leaderboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-light: #f0f8ff;
+      --bg-dark: #0d1117;
+      --text-light: #111;
+      --text-dark: #f0f8ff;
+      --primary-blue: #007bff;
+      --card-bg-light: #ffffff;
+      --card-bg-dark: #1c1f26;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Bitcount Grid Double', sans-serif;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--primary-blue);
+      color: white;
+      padding: 12px 24px;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-title img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .menu {
+      position: relative;
+    }
+
+    .menu button {
+      background: #ffffff33;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .menu-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+      min-width: 160px;
+      z-index: 100;
+    }
+
+    .menu-content a {
+      display: block;
+      padding: 10px 16px;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .menu-content a:hover {
+      background: #e0e0e0;
+    }
+
+    .menu:hover .menu-content {
+      display: block;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .toggle-switch {
+      background-color: #ffffff55;
+      border: 2px solid white;
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-size: 14px;
+      cursor: pointer;
+      color: white;
+      transition: background 0.3s;
+      user-select: none;
+    }
+
+    .profile {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: url('https://api.dicebear.com/8.x/pixel-art/svg?seed=Anisha') center/cover no-repeat;
+      border: 2px solid white;
+    }
+
+    .xp-rank {
+      font-size: 14px;
+      color: white;
+      text-align: right;
+    }
+
+    main {
+      padding: 32px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .leaderboard {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: var(--card-bg-light);
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    body.dark-mode .leaderboard {
+      background-color: var(--card-bg-dark);
+    }
+
+    .leaderboard-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    body.dark-mode .leaderboard-item {
+      border-bottom: 1px solid #333;
+    }
+
+    .leaderboard-item:last-child {
+      border-bottom: none;
+    }
+
+    .leaderboard-item:nth-child(1) {
+      font-weight: bold;
+      background-color: #cce5ff;
+    }
+
+    body.dark-mode .leaderboard-item:nth-child(1) {
+      background-color: #144272;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo-title">
+      <img src="logo.png" alt="Logo" />
+      <h1>ElevAIte</h1>
+    </div>
+
+    <div class="header-right">
+      <div class="xp-rank">
+        Rank: #4<br>
+        XP: 8300
+      </div>
+      <div class="profile"></div>
+      <div class="menu">
+        <button>☰ Menu</button>
+        <div class="menu-content">
+          <a href="home page v2.html">Home</a>
+          <a href="progress.html">Progress Graph</a>
+          <a href="badges.html">Badges</a>
+          <a href="plannerv2.html">Plan</a>
+        </div>
+      </div>
+      <div class="toggle-switch" onclick="toggleMode()">🌙 Dark Mode</div>
+    </div>
+  </header>
+
+  <main>
+    <h2>Class Leaderboard</h2>
+    <div class="leaderboard">
+      <div class="leaderboard-item"><span>1. Aria zukenburg</span><span>9000 XP</span></div>
+      <div class="leaderboard-item"><span>2. brady jones</span><span>8750 XP</span></div>
+      <div class="leaderboard-item"><span>3. Lia </span><span>8600 XP</span></div>
+      <div class="leaderboard-item"><span>4. You</span><span>8300 XP</span></div>
+      <div class="leaderboard-item"><span>5. Anonymous</span><span>8100 XP</span></div>
+      <div class="leaderboard-item"><span>6. Aria</span><span>8000 XP</span></div>
+      <div class="leaderboard-item"><span>7. Edward jake</span><span>7750 XP</span></div>
+      <div class="leaderboard-item"><span>8. Leo</span><span>7600 XP</span></div>
+      <div class="leaderboard-item"><span>9. Anonymous</span><span>6300 XP</span></div>
+      <div class="leaderboard-item"><span>10. Zane</span><span>5100 XP</span></div>
+      <div class="leaderboard-item"><span>11. Arian burges</span><span>5000 XP</span></div>
+      <div class="leaderboard-item"><span>12. bradlen jonas</span><span>4750 XP</span></div>
+      <div class="leaderboard-item"><span>13. Liah crown </span><span>4600 XP</span></div>
+      <div class="leaderboard-item"><span>14. Anonymous</span><span>4300 XP</span></div>
+      <div class="leaderboard-item"><span>15. Anonymous</span><span>4100 XP</span></div>
+      <div class="leaderboard-item"><span>16. sarah james</span><span>4000 XP</span></div>
+      <div class="leaderboard-item"><span>17. Eddie walter</span><span>3750 XP</span></div>
+      <div class="leaderboard-item"><span>18. Lenny pricks</span><span>3600 XP</span></div>
+      <div class="leaderboard-item"><span>19. Anonymous</span><span>2300 XP</span></div>
+      <div class="leaderboard-item"><span>20. Zadia jean</span><span>2100 XP</span></div>
+    </div>
+  </main>
+
+  <script>
+    function toggleMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>
+
